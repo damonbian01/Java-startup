@@ -1,4 +1,4 @@
-package com.cstnet.cnnic.java_basic_startup;
+package com.cstnet.cnnic.java_startup;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
