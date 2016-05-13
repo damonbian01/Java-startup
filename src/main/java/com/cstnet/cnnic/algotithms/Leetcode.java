@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 import org.junit.Test;
 
 public class Leetcode {
@@ -189,6 +191,38 @@ public class Leetcode {
 		else
 			median = findKth(nums1, nums2, 0, m, 0, n, k+1);
 		System.out.println("median is:" + median);
+	}
+	
+	/**
+	 * 5.  Longest Palindromic Substring
+	 * Given a string S, find the longest palindromic substring in S. You may assume that the maximum length of S is 1000, 
+	 * and there exists one unique longest palindromic substring.
+	 * use dynamic programming O(log(n*n))
+	 */
+	@Test
+	public void longestPalindrome() {
+		String s = "ccc";
+		int m = s.length();
+		boolean[][] table = new boolean[m][m];
+		int maxStart = 0, maxEnd = 0;
+		for (int i = 0; i < m; i++) {
+			table[i][i] = true;
+			if (i > 0 && s.charAt(i) == s.charAt(i - 1)) {
+				table[i-1][i] = true;
+				maxStart = i - 1;
+				maxEnd = i;
+			}
+		}
+		for (int i = 3; i <= m; i++) {
+			for (int j = 0; j < m - i + 1; j++) {
+				if (table[j+1][j+i-2] && s.charAt(j) == s.charAt(j+i-1)) {
+					table[j][j+i-1] = true;
+					maxStart = j;
+					maxEnd = j+i-1;
+				}
+			}
+		}
+		System.out.println("max palindromic substring is " + s.substring(maxStart, maxEnd+1));
 	}
 	
 	@Test
