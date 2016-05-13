@@ -151,6 +151,46 @@ public class Leetcode {
 		System.out.println("max length is:" + maxLen);
 	}
 	
+	/**
+	 * 4.  Median of Two Sorted Arrays
+	 * There are two sorted arrays nums1 and nums2 of size m and n respectively. Find the median of the two sorted arrays. 
+	 * The overall run time complexity should be O(log (m+n)).
+	 */
+	private double findKth(int[] nums1, int[] nums2, int start1, int len1, int start2, int len2, int poiK) {
+		if (len1 > len2)
+			return findKth(nums2, nums1, start2, len2, start1, len1, poiK);
+		if (len1 == 0)
+			return nums2[start2 + poiK -1];
+		if (poiK == 1)
+			return Math.min(nums1[start1], nums2[start2]);
+		int p1 = Math.min(poiK/2, len1);
+		int p2 = poiK - p1;
+		if (nums1[start1+p1-1] < nums2[start2+p2-1]) {
+			return findKth(nums1, nums2, start1 + p1, len1 - p1, start2, len2, poiK - p1);
+		} else if (nums1[start1+p1-1] > nums2[start2+p2-1]) {
+			return findKth(nums1, nums2, start1, len1, start2 + p2, len2 - p2, poiK - p2);
+		} else {
+			return nums1[start1+p1-1];
+		}
+	}
+	
+	@Test
+	public void findMedianSortedArrays() {
+		int[] nums1 = {1, 5, 18, 40};
+		int[] nums2 = {2, 6, 13, 24};
+		double median = 0.0;
+		int m = nums1.length;
+		int n = nums2.length;
+		if (m + n < 1)
+			throw new IllegalArgumentException("at least one integer in two arrays");
+		int k = (m+n) / 2;
+		if ((m+n)%2 == 0)
+			median = (findKth(nums1, nums2, 0, m, 0, n, k) + findKth(nums1, nums2, 0, m, 0, n, k + 1))/2;
+		else
+			median = findKth(nums1, nums2, 0, m, 0, n, k+1);
+		System.out.println("median is:" + median);
+	}
+	
 	@Test
 	public void test() {
 	}
