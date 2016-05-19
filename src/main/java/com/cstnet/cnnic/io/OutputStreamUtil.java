@@ -34,13 +34,14 @@ public class OutputStreamUtil {
 		int numberOfPrintableCharacters = 94;
 		int numberPerLine = 72;
 		
-		int lines = 3;
+		int lines = 30;
 		int start = firstPrintableCharacter;
 		while(lines-- > 0) {
 			byte[] buffer = new byte[numberPerLine+2];
 			for(int i = start; i < start + numberPerLine; i++) {
 				buffer[i-start] = (byte) ((i - firstPrintableCharacter) % numberOfPrintableCharacters + firstPrintableCharacter);
 			}
+			out.write(String.valueOf(30-lines).getBytes());
 			buffer[72] = (byte) '\r';
 			buffer[73] = (byte) '\n';
 			out.write(buffer);
@@ -71,13 +72,13 @@ public class OutputStreamUtil {
 			System.exit(1);
 		} catch (IOException e) {
 			System.out.println("IO error");
+		} finally {
 			if (fop != null)
 				try {
 					fop.close();
 				} catch (IOException e1) {
 
 				}
-				
 		}
 		
 	}
