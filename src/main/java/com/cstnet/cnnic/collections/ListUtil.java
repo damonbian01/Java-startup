@@ -18,4 +18,12 @@ public class ListUtil {
 		System.out.println(list.subList(1, 0) == null);
 	}
 	
+	@Test
+	public void testArrCopy() {
+		String[] raw = {"123","234","345"};
+		String[] sub = Arrays.copyOfRange(raw, 0, 1);
+		for (int i = 0; i < sub.length; i++)
+			System.out.println(sub[i]);
+	}
+	
 }
