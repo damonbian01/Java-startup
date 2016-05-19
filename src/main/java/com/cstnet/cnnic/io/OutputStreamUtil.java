@@ -1,6 +1,7 @@
 package com.cstnet.cnnic.io;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -25,14 +26,13 @@ import java.io.OutputStream;
  */
 
 
-public class GenerateASCII {
+public class OutputStreamUtil {
 
 	
 	public static void generateASCII_1(OutputStream out) throws IOException {
 		int firstPrintableCharacter = 33;
 		int numberOfPrintableCharacters = 94;
 		int numberPerLine = 72;
-		
 		
 		int lines = 3;
 		int start = firstPrintableCharacter;
@@ -49,15 +49,36 @@ public class GenerateASCII {
 		}
 	}
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		File file = new File("C:/Users/Damon/Desktop/fileoutput.txt");
 		FileOutputStream fop = null;
 		if (!file.exists()) {
 			System.out.println("file does not exist and will create it");
-			file.createNewFile();
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				System.out.println("create file failed");
+				System.exit(1);
+			}
 		}
-		fop = new FileOutputStream(file);
-		generateASCII_1(fop);
-		fop.close();
+		
+		try {
+			fop = new FileOutputStream(file);
+			generateASCII_1(fop);
+			fop.close();
+		} catch (FileNotFoundException e) {
+			System.out.println(file.getAbsolutePath() + " not found");
+			System.exit(1);
+		} catch (IOException e) {
+			System.out.println("IO error");
+			if (fop != null)
+				try {
+					fop.close();
+				} catch (IOException e1) {
+
+				}
+				
+		}
+		
 	}
 }
