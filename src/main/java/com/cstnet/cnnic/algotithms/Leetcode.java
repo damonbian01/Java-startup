@@ -225,6 +225,59 @@ public class Leetcode {
 		System.out.println("max palindromic substring is " + s.substring(maxStart, maxEnd+1));
 	}
 	
+	/**
+	 * 6.  ZigZag Conversion
+	 * The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: 
+	 * (you may want to display this pattern in a fixed font for better legibility)
+	 * 	P   A   H   N
+		A P L S I I G
+		Y   I   R
+	 * And then read line by line: "PAHNAPLSIIGYIR"
+	 */
+	
+	@Test
+	public void convert() {
+		String s = "PAYPALISHIRING";
+		int numRows = 3;
+		if (s.length() == 0) {
+			System.out.println("");
+			return;
+		}
+		if (numRows == 1) {
+			System.out.println(s);
+			return;
+		}
+		int maxColumn = (numRows -1)*(s.length()/(2*numRows-2)) + (s.length()%(2*numRows-2) - numRows + 1 > 0 ? s.length()%(2*numRows-2) - numRows + 1 : s.length()%(2*numRows-2) > 0 ? 1 : 0);
+		char[][] matrix = new char[numRows][maxColumn];
+		
+		for (int i = 0; i < s.length(); i++) {
+			char ch = s.charAt(i);
+			int x,y;
+			int block_x = (i+1)/(2*numRows-2);
+			int block_y = (i+1)%(2*numRows-2);
+			if (block_y == 0) {
+				x = 1;
+				y = block_x*(numRows - 1) - 1;
+			} else if (block_y <= numRows) {
+				x = block_y - 1;
+				y = block_x*(numRows - 1);
+			} else {
+				x = numRows - (block_y - numRows) - 1;
+				y = block_x*(numRows - 1) + (block_y - numRows); 
+			}
+			matrix[x][y] = ch;
+		}
+		
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < maxColumn; j++) {
+				if (matrix[i][j] != 0 ) 
+					sb.append(matrix[i][j]);
+			}
+		}
+		System.out.println(sb.toString());;
+	}
+	
 	@Test
 	public void test() {
 	}
