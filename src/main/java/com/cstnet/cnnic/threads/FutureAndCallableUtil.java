@@ -3,7 +3,6 @@ package com.cstnet.cnnic.threads;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -34,7 +33,7 @@ public class FutureAndCallableUtil {
 		
 		System.out.println();
 		System.out.println("max num is " + Math.max(future1.get(), future2.get()));
-		System.exit(0);
+		service.shutdown();
 	}
 	
 	public static class FindMaxTask implements Callable<Integer> {
