@@ -569,6 +569,57 @@ public class Leetcode {
 		
 	}
 	
+	/**
+	 * 18. 4Sum
+	 * Given an array S of n integers, are there elements a, b, c, and d in S such that a + b + c + d = target? 
+	 * Find all unique quadruplets in the array which gives the sum of target.
+	 */
+	private List<List<Integer>> subTwoSum(int i, int j, int[] nums, int newTarget) {
+		List<List<Integer>> list = new ArrayList<List<Integer>>();
+		int low = j + 1;
+		int high = nums.length - 1;
+		
+		while (low < high) {
+			int sum = nums[low] + nums[high];
+			if (sum < newTarget) {
+				low++;
+			} else if (sum > newTarget) {
+				high--;
+			} else {
+				List<Integer> lst = Arrays.asList(nums[i], nums[j], nums[low],nums[high]);
+				if(!list.contains(lst))	list.add(lst);
+				high--;
+			}
+		}
+		
+		return list;
+	}
+	
+	@Test
+	public void fourSum() {
+		int[] nums = {1,-2,-5,-4,-3, 3, 3, 5};
+		int target = -11;
+		List<List<Integer>> list = new ArrayList<List<Integer>>();
+		
+		Arrays.sort(nums);
+		for (int i = 0; i < nums.length - 3; i++) {
+			if (i > 0 && nums[i] == nums[i-1]) continue;
+			if (nums[i] > target && nums[i] > 0) break;
+			for (int j = i+1; j < nums.length - 2; j++) {
+				if (j - i > 1 && nums[j] == nums[j-1]) continue;
+				if (nums[i] + nums[j] > target && nums[j] > 0) break;
+				list.addAll(subTwoSum(i, j, nums, target - (nums[i] + nums[j])));
+			}
+		}
+		
+		for (int i = 0; i < list.size(); i++) {
+			List<Integer> lst = list.get(i);
+			for (int j = 0; j < lst.size(); j++)
+				System.out.print(lst.get(j) + " ");
+			System.out.println();
+		}
+	}
+	
 
 	@Test
 	public void test() {
