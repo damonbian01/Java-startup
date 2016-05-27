@@ -2,9 +2,11 @@ package com.cstnet.cnnic.algotithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -619,6 +621,55 @@ public class Leetcode {
 			System.out.println();
 		}
 	}
+	
+	/**
+	 * 23. Merge k Sorted Lists
+	 * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
+	 * use PriorityQueue, the time complexity is O(n(logk)), k is number of lists and n is the num of all elements
+	 */
+	@Test
+	public void mergeKLists() {
+		ListNode l11 = new ListNode(0);
+		ListNode l22 = new ListNode(0);
+		ListNode.createNode(l11, Arrays.asList(2, 7, 45));
+		ListNode.createNode(l22, Arrays.asList(4, 6, 34));
+		ListNode l1 = l11.next;
+		ListNode l2 = l22.next;
+		ListNode[] lists = new ListNode[] {l1,l2};
+
+		if (lists == null || lists.length == 0) {
+			System.out.println("null");
+			return;
+		}
+		
+		PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
+
+			public int compare(ListNode o1, ListNode o2) {
+				return o1.val - o2.val;
+			}
+		});
+		
+		ListNode head = new ListNode(0);
+		ListNode p = head;
+		
+		for (ListNode node : lists) {
+			if (node != null)
+				queue.offer(node);
+		}
+		while (!queue.isEmpty()) {
+			ListNode currentMin = queue.poll();
+			p.next = currentMin;
+			p = currentMin;
+			if (currentMin.next != null)
+				queue.offer(currentMin.next);
+			
+		}
+		System.out.println(head.next.toString());
+	}
+	
+	/**
+	 * 30. Substring with Concatenation of All Words
+	 */
 	
 
 	@Test
