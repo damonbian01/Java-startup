@@ -623,6 +623,79 @@ public class Leetcode {
 	}
 	
 	/**
+	 * 19. Remove Nth Node From End of List
+	 * Given a linked list, remove the nth node from the end of list and return its head.
+	 * For example,
+	 * Given linked list: 1->2->3->4->5, and n = 2.
+	 * After removing the second node from the end, the linked list becomes 1->2->3->5.
+	 */
+	@Test
+	public void removeNthFromEnd() {
+		ListNode list = new ListNode(0);
+		ListNode.createNode(list, Arrays.asList(1,2));
+
+		ListNode head = list.next;
+		int n = 2;
+		
+		ListNode p = head;
+		
+		int count = 0;
+		while (p != null) {
+			count++;
+			p = p.next;
+		}
+		p = head;
+		count = count+1-n;
+		if (count == 1) {
+			head = head.next;
+			if (head == null) System.out.println("null");
+			else System.out.println(head.toString());
+			return;
+		}
+		
+		while ((--count)-1 > 0) {
+			p = p.next;
+		}
+		p.next = p.next.next;
+		System.out.println(head.toString());
+	}
+	
+	/**
+	 * 21. Merge Two Sorted Lists
+	 * Merge two sorted linked lists and return it as a new list. 
+	 * The new list should be made by splicing together the nodes of the first two lists.
+	 */
+	@Test
+	public void mergeTwoLists() {
+		ListNode l11 = new ListNode(0);
+		ListNode l22 = new ListNode(0);
+		ListNode.createNode(l11, Arrays.asList(2, 7, 45));
+		ListNode.createNode(l22, Arrays.asList(4, 6, 34));
+		ListNode l1 = l11.next;
+		ListNode l2 = l22.next;
+		
+		ListNode head = new ListNode(0);
+		ListNode p1 = l1;
+		ListNode p2 = l2;
+		ListNode p3 = head;
+		while (p1 != null && p2 != null) {
+			int val;
+			if (p1.val <= p2.val) {
+				p3.next = new ListNode(p1.val);
+				p1 = p1.next;
+			} else {
+				p3.next = new ListNode(p2.val);
+				p2 = p2.next;
+			}
+			p3 = p3.next;
+		}
+		if (p1 != null) p3.next = p1;
+		if (p2 != null) p3.next = p2;
+		System.out.println(head.next.toString());
+	}
+	
+	
+	/**
 	 * 23. Merge k Sorted Lists
 	 * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
 	 * use PriorityQueue, the time complexity is O(n(logk)), k is number of lists and n is the num of all elements
@@ -668,8 +741,38 @@ public class Leetcode {
 	}
 	
 	/**
-	 * 30. Substring with Concatenation of All Words
+	 * 24. Swap Nodes in Pairs
 	 */
+	
+	/**
+	 * 30. Substring with Concatenation of All Words
+	 * Given a linked list, swap every two adjacent nodes and return its head.
+	 * For example
+	 * Given 1->2->3->4, you should return the list as 2->1->4->3
+	 */
+	@Test
+	public void swapPairs() {
+		ListNode l11 = new ListNode(0);
+		ListNode.createNode(l11, Arrays.asList(2, 7, 45,34));
+		ListNode head = l11.next;
+		
+		if (head == null) {
+			System.out.println("null");
+			return;
+		}
+		ListNode p = head;
+		int count = 0;
+		while(p != null) {
+			if (p.next != null && count%2 == 0) {
+				int tmp = p.val;
+				p.val = p.next.val;
+				p.next.val = tmp;
+			}
+			p = p.next;
+			count++;
+		}
+		System.out.println(head.toString());
+	}
 	
 	/**
 	 * 53. Maximum Subarray
@@ -835,6 +938,56 @@ public class Leetcode {
 			}
 		}
 		System.out.println(dp[m-1][m-1]);
+	}
+	
+	/**
+	 * 70. Climbing Stairs
+	 * You are climbing a stair case. It takes n steps to reach to the top.
+	 * Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+	 * dp[n] = dp[n-1] + dp[n-2]
+	 */
+	@Test
+	public void climbStairs() {
+		int n = 4;
+		
+		if (n < 1) {
+			System.out.println("0");
+			return;
+		}
+		if (n == 1) {
+			System.out.println("1");
+			return;
+		}
+		if (n == 2) {
+			System.out.println("2");
+			return;
+		}
+		
+		int[] dp = new int[n+1];
+		dp[0] = 1;
+		dp[1] = 1;
+		dp[2] = 2;
+		for (int i = 3; i < n+1; i++) {
+			dp[i] = dp[i-1] + dp[i-2];
+		}
+		System.out.println(dp[n]);
+	}
+	
+	/**
+	 * 72. Edit Distance
+	 * Given two words word1 and word2, 
+	 * find the minimum number of steps required to convert word1 to word2. (each operation is counted as 1 step.)
+	 * You have the following 3 operations permitted on a word:
+	 * a) Insert a character
+	 * b) Delete a character
+	 * c) Replace a character
+	 */
+	@Test
+	public void minDistance() {
+		String word1;
+		String word2;
+		int ret = 0;
+		System.out.println(ret);
 	}
 	
 	@Test
