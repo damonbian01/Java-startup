@@ -671,7 +671,172 @@ public class Leetcode {
 	 * 30. Substring with Concatenation of All Words
 	 */
 	
-
+	/**
+	 * 53. Maximum Subarray
+	 * Find the contiguous subarray within an array (containing at least one number) 
+	 * which has the largest sum.
+	 * For example, given the array [−2,1,−3,4,−1,2,1,−5,4],
+	 * the contiguous subarray [4,−1,2,1] has the largest sum = 6.
+	 * use DP ? Greedy?
+	 */
+	
+	@Test
+	public void maxSubArrayTLE() {
+		int[] nums = {1};
+		
+		if (nums == null || nums.length == 0) {
+			System.out.println("null");
+			return;
+		}
+		
+		int size = nums.length;
+		int dp[][] = new int[size][size];
+		int sum = nums[0];
+		
+		for (int i = 0; i < size; i++) {
+			dp[i][i] = nums[i];
+			if (dp[i][i] > sum) sum = dp[i][i];
+			for (int j = i+1; j < size; j++) {
+				dp[i][j] = dp[i][j-1] + nums[j];
+				if (dp[i][j] > sum) sum = dp[i][j];
+			}
+		}
+		
+		System.out.println(sum);
+	}
+	
+	@Test
+	public void maxSubArray() {
+		int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};
+		
+		if (nums == null || nums.length == 0) {
+			System.out.println("null");
+			return;
+		}
+		
+		int sum = 0;
+		int maxSum = Integer.MIN_VALUE;
+		for (int i = 0; i < nums.length; i++) {
+			sum += nums[i];
+			if (sum > maxSum) maxSum = sum;
+			if (sum < 0) sum = 0;
+		}
+		System.out.println("max:" + maxSum);
+	}
+	
+	/**
+	 * 62. Unique Paths
+	 * A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).T
+	 * he robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid 
+	 * (marked 'Finish' in the diagram below).How many possible unique paths are there?
+	 * dp[1,j] = 1
+	 * dp[i,1] = 1
+	 * dp[i,j] = dp[i,j-1]+dp[i-1,j]
+	 */
+	@Test
+	public void uniquePaths() {
+		int m = 3;
+		int n = 7;
+		
+		if (m < 1 || m < 1 || m > 100 || n > 100)
+			throw new IllegalArgumentException("m or n is incorrect");
+		
+		//index start from 1
+		int[][] dp = new int[m+1][n+1];
+		for (int i = 1; i < m+1; i++) dp[i][1] = 1;
+		for (int j = 1; j < n+1; j++) dp[1][j] = 1;
+		for (int i = 2; i < m+1; i++) {
+			for (int j = 2; j < n+1; j++)
+				dp[i][j] = dp[i][j-1] + dp[i-1][j];
+		}
+		
+		System.out.println(dp[m][n]);
+	}
+	
+	/**
+	 * 63. Unique Paths II
+	 * Follow up for "Unique Paths":Now consider if some obstacles are added to the grids. 
+	 * How many unique paths would there be?
+	 * An obstacle and empty space is marked as 1 and 0 respectively in the grid.
+	 * [
+  		[0,0,0],
+  		[0,1,0],
+  		[0,0,0]
+		]
+	 */
+	@Test
+	public void uniquePathsWithObstacles() {
+		int[][] obstacleGrid = {
+				{0,0,0},
+				{0,1,0},
+				{0,0,0}};
+		
+		int m = obstacleGrid.length;
+		int n = obstacleGrid[0].length;
+		
+		int[][] dp = new int[m][n];
+	
+		int blockM = 0;
+		for (int i = 0; i < m; i++) {
+			if (blockM == 1) {
+				dp[i][0] = 0;
+			} else if (obstacleGrid[i][0] == 1) {
+				dp[i][0] = 0;
+				blockM = 1;
+			} else {
+				dp[i][0] = 1;
+			}
+		}
+		int blockN = 0;
+		for (int j = 0; j < n; j++) {
+			if (blockN == 1) {
+				dp[0][j] = 0;
+			} else if (obstacleGrid[0][j] == 1) {
+				dp[0][j] = 0;
+				blockN = 1;
+			} else {
+				dp[0][j] = 1;
+			}
+		}
+		
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				if (obstacleGrid[i][j] == 1) dp[i][j] = 0;
+				else dp[i][j] = dp[i-1][j] + dp[i][j-1];
+			}
+		}
+		
+		System.out.println(dp[m-1][n-1]);
+	}
+	
+	/**
+	 * 64. Minimum Path Sum
+	 * Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right 
+	 * which minimizes the sum of all numbers along its path.
+	 * use DP
+	 */
+	@Test
+	public void minPathSum() {
+		int[][] grid = {
+				{0,0,0},
+				{0,1,0},
+				{0,0,0}};
+		
+		int m = grid.length;
+		int n = grid[0].length;
+		int[][] dp = new int[m][n];
+		dp[0][0] = grid[0][0];
+		for (int i = 1; i < m; i++) dp[i][0] = dp[i-1][0] + grid[i][0];
+		for (int j = 1; j < n; j++) dp[0][j] = dp[0][j-1] + grid[0][j];
+		
+		for (int i = 1; i < m; i++) {
+			for (int j = 1; j < n; j++) {
+				dp[i][j] = Math.min(dp[i-1][j], dp[i][j-1]) + grid[i][j];
+			}
+		}
+		System.out.println(dp[m-1][m-1]);
+	}
+	
 	@Test
 	public void test() {
 	}
