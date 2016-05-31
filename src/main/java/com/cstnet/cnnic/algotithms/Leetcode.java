@@ -1,14 +1,20 @@
 package com.cstnet.cnnic.algotithms;
 
+import java.security.KeyStore.Entry;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.text.html.parser.Entity;
 
 import org.junit.Test;
 
@@ -992,5 +998,102 @@ public class Leetcode {
 	
 	@Test
 	public void test() {
+	}
+	
+	/**
+	 * 面试题，输出对角线
+	 */
+	@Test
+	public void printTriangle() {
+		int[][] data = {
+				{1, 2, 3, 4},
+				{5, 6, 7, 8},
+				{9, 10, 11, 12},
+				{13, 14, 15, 16}
+		};
+		
+		int m = data.length;
+		int n = data[0].length;
+		for (int i = 0; i < n; i++ ) {
+			for (int j = 0; j <= i; j++) {
+				System.out.print(data[j][n-1-i+j] + " ");
+			}
+			System.out.println();
+		}
+		for (int i = 1; i < n; i++) {
+			for (int j = i; j < n; j++) {
+				System.out.print(data[j][j-i] + " ");
+			}
+			System.out.println();
+		}
+	}
+	
+	/**
+	 * 面试题，reverse字符串
+	 */
+	@Test
+	public void reverseStr() {
+		String str = "welcome to com";
+		StringBuffer sb = new StringBuffer(str);
+		sb.reverse();
+		System.out.println(sb.toString());
+	}
+	
+	/**
+	 * 面试题， hashmap排序
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public void sortMap() {
+		Map<Integer, String> map = new HashMap<Integer, String>();
+		map.put(1, "1");
+		map.put(5, "5");
+		map.put(2, "2");
+		map.put(12, "12");
+		map.put(4, "4");
+		
+		List list = new ArrayList(map.entrySet());
+		Collections.sort(list, new Comparator<java.util.Map.Entry<Integer, String>>() {
+
+			public int compare(java.util.Map.Entry<Integer, String> o1, java.util.Map.Entry<Integer, String> o2) {
+				return o1.getKey()-o2.getKey();
+			}
+		});
+		
+		Iterator<java.util.Map.Entry<Integer, String>> itera = list.iterator();
+		while (itera.hasNext())
+			System.out.println(itera.next().getValue());
+		
+		Map<Integer,String> tMap = new TreeMap<Integer, String>(map);
+		Iterator<java.util.Map.Entry<Integer, String>> iter = tMap.entrySet().iterator();
+		while (iter.hasNext())
+			System.out.println(iter.next().getValue());
+	}
+	
+	/**
+	 * 面试题，n个不等长字符串，打印出来
+	 */
+	@Test
+	public void printNStr() {
+		List<String> lst = new ArrayList<String>(Arrays.asList(new String[]{
+				"12345",
+				"123456789",
+				"3456789"}));
+		int maxLen = 0;
+		StringBuffer sb = new StringBuffer();
+		int[] lens = new int[lst.size()];
+		for (int i = 0; i < lst.size(); i++) {
+			int tmpLen = lst.get(i).length(); 
+			maxLen = tmpLen > maxLen ? tmpLen : maxLen;
+			lens[i] = tmpLen;
+		}
+		for (int i = 0; i < maxLen; i++) {
+			for (int j = 0; j < lst.size(); j++) {
+				if (lens[j] > i)
+					sb.append(lst.get(j).charAt(i));
+			}
+			sb.append("\n");
+		}
+		System.out.println(sb.toString());
 	}
 }
