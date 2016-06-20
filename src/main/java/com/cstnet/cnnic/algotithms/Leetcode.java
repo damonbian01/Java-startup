@@ -706,45 +706,45 @@ public class Leetcode {
 	 * Merge k sorted linked lists and return it as one sorted list. Analyze and describe its complexity.
 	 * use PriorityQueue, the time complexity is O(n(logk)), k is number of lists and n is the num of all elements
 	 */
-	@Test
-	public void mergeKLists() {
-		ListNode l11 = new ListNode(0);
-		ListNode l22 = new ListNode(0);
-		ListNode.createNode(l11, Arrays.asList(2, 7, 45));
-		ListNode.createNode(l22, Arrays.asList(4, 6, 34));
-		ListNode l1 = l11.next;
-		ListNode l2 = l22.next;
-		ListNode[] lists = new ListNode[] {l1,l2};
-
-		if (lists == null || lists.length == 0) {
-			System.out.println("null");
-			return;
-		}
-		
-		PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
-
-			public int compare(ListNode o1, ListNode o2) {
-				return o1.val - o2.val;
-			}
-		});
-		
-		ListNode head = new ListNode(0);
-		ListNode p = head;
-		
-		for (ListNode node : lists) {
-			if (node != null)
-				queue.offer(node);
-		}
-		while (!queue.isEmpty()) {
-			ListNode currentMin = queue.poll();
-			p.next = currentMin;
-			p = currentMin;
-			if (currentMin.next != null)
-				queue.offer(currentMin.next);
-			
-		}
-		System.out.println(head.next.toString());
-	}
+//	@Test
+//	public void mergeKLists() {
+//		ListNode l11 = new ListNode(0);
+//		ListNode l22 = new ListNode(0);
+//		ListNode.createNode(l11, Arrays.asList(2, 7, 45));
+//		ListNode.createNode(l22, Arrays.asList(4, 6, 34));
+//		ListNode l1 = l11.next;
+//		ListNode l2 = l22.next;
+//		ListNode[] lists = new ListNode[] {l1,l2};
+//
+//		if (lists == null || lists.length == 0) {
+//			System.out.println("null");
+//			return;
+//		}
+//
+//		PriorityQueue<ListNode> queue = new PriorityQueue<ListNode>(new Comparator<ListNode>() {
+//
+//			public int compare(ListNode o1, ListNode o2) {
+//				return o1.val - o2.val;
+//			}
+//		});
+//
+//		ListNode head = new ListNode(0);
+//		ListNode p = head;
+//
+//		for (ListNode node : lists) {
+//			if (node != null)
+//				queue.offer(node);
+//		}
+//		while (!queue.isEmpty()) {
+//			ListNode currentMin = queue.poll();
+//			p.next = currentMin;
+//			p = currentMin;
+//			if (currentMin.next != null)
+//				queue.offer(currentMin.next);
+//
+//		}
+//		System.out.println(head.next.toString());
+//	}
 	
 	/**
 	 * 24. Swap Nodes in Pairs
@@ -994,6 +994,55 @@ public class Leetcode {
 		String word2;
 		int ret = 0;
 		System.out.println(ret);
+	}
+
+	/**
+	 * 98. Validate Binary Search Tree
+	 * Assume a BST is defined as follows:
+	 * The left subtree of a node contains only nodes with keys less than the node's key.
+	 * The right subtree of a node contains only nodes with keys greater than the node's key.
+	 * Both the left and right subtrees must also be binary search trees.
+	 */
+	public static class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+		TreeNode(int x) {
+			val = x;
+		}
+	}
+
+	private boolean isValid(TreeNode root, long low, long high) {
+		boolean result = true;
+
+		if(root != null) {
+			if(!(root.val > low && root.val < high)) return false;
+			TreeNode left = root.left;
+			TreeNode right = root.right;
+
+			if(!(isValid(left, low, root.val) && isValid(right, root.val, high)))
+				result = false;
+		}
+		return result;
+	}
+
+	private boolean isValidBST(TreeNode root) {
+		boolean result = true;
+
+		if(root != null) {
+			TreeNode left = root.left;
+			TreeNode right = root.right;
+
+			if(!(isValid(left, (long) Integer.MIN_VALUE-1, root.val) && isValid(right, root.val, (long) Integer.MAX_VALUE+1)))
+				result = false;
+		}
+		return result;
+	}
+
+	@Test
+	public void isValidBSTjMain() {
+		TreeNode root = null;
+		System.out.println(isValidBST(root));
 	}
 	
 	@Test
